@@ -2560,7 +2560,7 @@ public:
     //  If reporting all errors, the stack will be empty, so return "errors".
     const Ch* GetInvalidSchemaKeyword() const {
         if (!schemaStack_.Empty()) return CurrentContext().invalidKeyword;
-        if (GetContinueOnErrors() && !error_.ObjectEmpty()) return (const Ch*)GetErrorsString();
+        if (GetContinueOnErrors() && !error_.ObjectEmpty()) return static_cast<const Ch*>(GetErrorsString());
         return 0;
     }
 
@@ -2902,7 +2902,7 @@ public:
         ISchemaValidator* sv = new (GetStateAllocator().Malloc(sizeof(GenericSchemaValidator))) GenericSchemaValidator(*schemaDocument_, root, documentStack_.template Bottom<char>(), documentStack_.GetSize(),
         depth_ + 1,
         &GetStateAllocator());
-        sv->SetValidateFlags(inheritContinueOnErrors ? GetValidateFlags() : GetValidateFlags() & ~(unsigned)kValidateContinueOnErrorFlag);
+        sv->SetValidateFlags(inheritContinueOnErrors ? GetValidateFlags() : GetValidateFlags() & ~static_cast<unsigned>(kValidateContinueOnErrorFlag));
         return sv;
     }
 
